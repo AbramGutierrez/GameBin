@@ -300,26 +300,27 @@ bool verifier1(int sensorPin1, int sensorPin2) {
   // if it is, the sensorState is LOW:
 
   if (sensorState && !lastState_1) {
-    Serial.println("Unbroken_1");
+    Serial.println("Broken_1");
   }
   if (!sensorState && lastState_1) {
-    Serial.println("Broken_1");
+    Serial.println("Unbroken_1");
   }
   lastState_1 = sensorState;
 
   // check sensor state 2
   if (sensorState_2 && !lastState_2_1) {
-    Serial.println("Unbroken_2");
-  }
-  if (!sensorState_2 && lastState_2_1) {
     Serial.println("Broken_2");
     sensor2_1 = 1;
+  }
+  if (!sensorState_2 && lastState_2_1) {
+    Serial.println("Unbroken_2");
+    //sensor2_1 = 1;
   }
   lastState_2_1 = sensorState_2;
 
   //Verifier, tier-1 is on the bottom
-  if ( sensorState_2 == HIGH ) {
-    if ( sensorState == LOW ) {
+  if ( sensorState_2 == LOW ) {
+    if ( sensorState == HIGH ) {
 
       if (sensor2_1 == 1) {
         return true;
@@ -340,26 +341,27 @@ bool verifier2(int sensorPin1, int sensorPin2) {
   // if it is, the sensorState is LOW:
 
   if (sensorState && !lastState_2_3) {
-    Serial.println("Unbroken_1");
+    Serial.println("Broken_1");
   }
   if (!sensorState && lastState_2_3) {
-    Serial.println("Broken_1");
+    Serial.println("Unbroken_1");
   }
   lastState_2_3 = sensorState;
 
   // check sensor state 2
   if (sensorState_2 && !lastState_2_2) {
-    Serial.println("Unbroken_2");
-  }
-  if (!sensorState_2 && lastState_2_2) {
     Serial.println("Broken_2");
     sensor2_2 = 1;
+  }
+  if (!sensorState_2 && lastState_2_2) {
+    Serial.println("Unbroken_2");
+    //sensor2_2 = 1;
   }
   lastState_2_2 = sensorState_2;
 
   //Verifier, tier-1 is on the bottom
-  if ( sensorState_2 == HIGH ) {
-    if ( sensorState == LOW ) {
+  if ( sensorState_2 == LOW ) {
+    if ( sensorState == HIGH ) {
 
       if (sensor2_2 == 1) {
         return true;
@@ -381,26 +383,27 @@ bool verifier3(int sensorPin1, int sensorPin2) {
   // if it is, the sensorState is LOW:
 
   if (sensorState && !lastState_3) {
-    Serial.println("Unbroken_1");
+    Serial.println("Broken_1");
   }
   if (!sensorState && lastState_3) {
-    Serial.println("Broken_1");
+    Serial.println("Unbroken_1");
   }
   lastState_3 = sensorState;
 
   // check sensor state 2
   if (sensorState_2 && !lastState_2_3) {
-    Serial.println("Unbroken_2");
-  }
-  if (!sensorState_2 && lastState_2_3) {
     Serial.println("Broken_2");
     sensor2_3 = 1;
+  }
+  if (!sensorState_2 && lastState_2_3) {
+    Serial.println("Unbroken_2");
+    //sensor2_3 = 1;
   }
   lastState_2_3 = sensorState_2;
 
   //Verifier, tier-1 is on the bottom
-  if ( sensorState_2 == HIGH ) {
-    if ( sensorState == LOW ) {
+  if ( sensorState_2 == LOW ) {
+    if ( sensorState == HIGH ) {
 
       if (sensor2_3 == 1) {
         return true;
