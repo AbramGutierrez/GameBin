@@ -18,7 +18,7 @@ Display LED Matrix Scoreboard and receive input from audioUno about updated scor
 RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
 
 #define LEDPIN 13
-#define COUNTERPIN 12
+#define COUNTERPIN 10
  
 int value = 0;
 int check = 0;
@@ -32,9 +32,37 @@ void setup() {
   
   // initialize the sensor pin as an input:
   pinMode(COUNTERPIN, INPUT);
+  digitalWrite(COUNTERPIN,LOW);
  
   Serial.begin(9600);
   
+  // GAME BIN TITLE - Only on power up
+  matrix.setCursor(1, 0);   // start at top left, with one pixel of spacing
+  matrix.setTextSize(1);    // size 1 == 8 pixels high
+  
+  // print each letter with a rainbow color
+  matrix.setTextColor(matrix.Color333(7,0,0));
+  matrix.print('G');
+  matrix.setTextColor(matrix.Color333(7,4,0)); 
+  matrix.print('A');
+  matrix.setTextColor(matrix.Color333(7,7,0));
+  matrix.print('M');
+  matrix.setTextColor(matrix.Color333(4,7,0)); 
+  matrix.print('E');
+  
+  matrix.setCursor(1, 9);   // next line
+  matrix.setTextColor(matrix.Color333(0,7,7)); 
+  matrix.print('B');
+  matrix.setTextColor(matrix.Color333(0,4,7)); 
+  matrix.print('I');
+  matrix.setTextColor(matrix.Color333(0,0,7));
+  matrix.print('N');
+  
+  delay(1000);
+  
+  // fill the screen with 'black'
+  matrix.fillScreen(matrix.Color333(0, 0, 0));
+ 
 }
 
 void loop() {
@@ -50,11 +78,12 @@ void loop() {
   if (check==1){
     value +=1;
     check = 0;
-  }
-      
+    
+    /*
   Serial.print("Score: ");
   Serial.print(value);
   Serial.print('\n');
+  */
   
   //Changing LED Matrix Panel
   matrix.fillScreen(0);
@@ -73,5 +102,14 @@ void loop() {
   matrix.print(value);
 
   delay(1000); // Delay to refresh LED Matrix
+  
+  // fill the screen with 'black'
+  matrix.fillScreen(matrix.Color333(0, 0, 0));
 
+  }
+  
+  if (value==5){
+      value = 0; //Reset Counter
+  }
+ 
 }
