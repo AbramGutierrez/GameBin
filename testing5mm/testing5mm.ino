@@ -8,8 +8,8 @@
     // Pin 6: Teensy++ 2.0 has the LED on pin 6
     // Pin 13: Teensy 3.0 has the LED on pin 13
      
-    #define SENSORPIN A0
-    #define SENSORPIN_2 A1
+    #define SENSORPIN A1
+    #define SENSORPIN_2 A0
      
     // variables will change:
     int sensorState = 0, lastState=0, sensorState_2 = 0, lastState_2 = 0; // variable for reading the pushbutton status

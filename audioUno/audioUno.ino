@@ -1,10 +1,15 @@
+/*
 
+AUDIO UNO
+
+Randomizer Modules  + Verifier Modules =  audioUNO
+
+*/
 
 // include SPI, MP3 and SD libraries
 #include <SPI.h>
 #include <Adafruit_VS1053.h>
 #include <SD.h>
-
 
 /***************************************************
 Music Player & SD Card: Define & Initialization
@@ -32,8 +37,6 @@ Music Player & SD Card: Define & Initialization
 
 Adafruit_VS1053_FilePlayer musicPlayer =
   Adafruit_VS1053_FilePlayer(SHIELD_RESET, SHIELD_CS, SHIELD_DCS, DREQ, CARDCS);
-
-
 
 /***************************************************
 Break-Beam Verifier: Define & Initialization
@@ -66,7 +69,7 @@ LED randomizer: Define & Initialization
 #define LED_3  8
 
 unsigned long previousMillis = 0;        // will store last time LED was updated
-const long interval = 3000;              // interval at which to blink (milliseconds)
+const long interval = 1000;              // interval at which to blink (milliseconds)
 
 // random number
 int r = 0;
@@ -79,11 +82,13 @@ int n3 = 0;
 /***************************************************
 Communication to Visual Uno: Define & Initialization
  ****************************************************/
-#define SENDSIGNAL 0
+#define SENDSIGNAL 10
 
-
-
-
+unsigned long timer;
+unsigned long tempTime;
+unsigned long oneMin = 60000;
+unsigned long minCounter = 0;
+int itemsCounter;
 
 void setup() {
 
@@ -156,18 +161,34 @@ void loop() {
   if (break_can == true && r == 1) {
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
+        itemsCounter++;
   }
   else if (break_paper == true && r == 2){
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH);  
+        itemsCounter++;
   } 
   else if (break_trash == true && r == 3) {
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH);  
+        itemsCounter++;
   } 
   else digitalWrite(SENDSIGNAL, LOW);
 
+  //Write to SD Card total count, every minute
+  timer = millis();
+  if (timer > 0){
+      tempTime = timer;
+  }
   
+  if ((timer-tempTime)==oneMin){
+    minCounter++;
+     storeValue(itemsCounter,minCounter);
+    timer=0;
+    tempTime=0;
+    itemsCounter=0;
+  }
+
 }
 
 // type 1 = can, type 2 = bottle, type 3 = waste
@@ -185,6 +206,24 @@ void storeData(int type) {
     else {
       myFile.println("Trash");
     }
+    myFile.close();
+  }
+  else {
+    Serial.println("error opening data.txt");
+  }
+
+}
+
+// Store value onto SD card
+void storeValue(int val, int time) {
+
+  File myFile = SD.open("value.txt", FILE_WRITE);
+  String value = "Counter: " + val;
+  String timeval = "Time" + time;
+  String data = value + timeval;
+
+  if (myFile) {
+    myFile.println(data);
     myFile.close();
   }
   else {
@@ -238,8 +277,6 @@ void playMusic() {
   }
   
 }
-
-
 
 void randomizer() {
 

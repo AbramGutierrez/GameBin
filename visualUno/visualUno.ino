@@ -78,12 +78,7 @@ void loop() {
   if (check==1){
     value +=1;
     check = 0;
-    
-    /*
-  Serial.print("Score: ");
-  Serial.print(value);
-  Serial.print('\n');
-  */
+
   
   //Changing LED Matrix Panel
   matrix.fillScreen(0);
