@@ -71,7 +71,7 @@ LED randomizer: Define & Initialization
 #define LED_3  8
 
 unsigned long previousMillis = 0;        // will store last time LED was updated
-const long interval = 1000;              // interval at which to blink (milliseconds)
+const long interval = 2500;              // interval at which to blink (milliseconds)
 
 // random number
 int r = 0;
@@ -383,35 +383,46 @@ void randomizer() {
 
     previousMillis = currentMillis;
 
-    int randNumber = random(1, 11);
-    if (randNumber <= 4 ) {
-      r = 1;
-      n1++;
+    int randNumber = random(1, 3);
+    
+    if (r == 1){
+      if (randNumber == 1) r = 2;
+      else r = 3;
+    } 
+    else if (r == 2){
+      if (randNumber == 1) r = 1;
+      else r = 3;
+    }
+    else{
+      if (randNumber == 1) r = 1;
+      else r = 2;
+    }
+
+
+
+    if (r == 1) {
       digitalWrite(LED_1, HIGH);
       digitalWrite(LED_2, LOW);
       digitalWrite(LED_3, LOW);
     }
-    else if (randNumber == 5 || randNumber == 6) {
-      r = 2;
-      n3++;
+    else if (r == 2) {
       digitalWrite(LED_1, LOW);
       digitalWrite(LED_2, HIGH);
       digitalWrite(LED_3, LOW);
     }
     else {
-      r = 3;
-      n2++;
       digitalWrite(LED_1, LOW);
       digitalWrite(LED_2, LOW);
       digitalWrite(LED_3, HIGH);
     }
-    Serial.println("randomNumber: " + randNumber);
+    
+/*    Serial.println("randomNumber: " + randNumber);
     Serial.print(" n1: ");
     Serial.print(n1);
     Serial.print(" n2: ");
     Serial.print(n2);
     Serial.print(" n3: ");
-    Serial.println(n3);
+    Serial.println(n3);*/
   }
 }
 
