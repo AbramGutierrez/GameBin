@@ -42,12 +42,12 @@ Adafruit_VS1053_FilePlayer musicPlayer =
 Break-Beam Verifier: Define & Initialization
  ****************************************************/
 
-#define SENSORPIN_1 2	// Pin A1: tier 1 can top
-#define SENSORPIN_2 5	// Pin A0: tier 2 can bottom
-#define SENSORPIN_3 A3	// Pin A2: tier 1 paper top
-#define SENSORPIN_4 A2	// Pin A3: tier 2 paper bottom
-#define SENSORPIN_5 A5	// Pin A4: tier 1 trash top
-#define SENSORPIN_6 A4	// Pin A5: tier 2 trash bottom
+#define SENSORPIN_1 A1	// Pin A0: tier 1 can
+#define SENSORPIN_2 A0	// Pin A1: tier 2 can
+#define SENSORPIN_3 A3	// Pin A2: tier 1 paper
+#define SENSORPIN_4 A2	// Pin A3: tier 2 paper
+#define SENSORPIN_5 A5	// Pin A4: tier 1 trash
+#define SENSORPIN_6 A4	// Pin A5: tier 2 trash
 
 // initialize variables
 int sensor2_1 = 0;
@@ -64,15 +64,20 @@ LED randomizer: Define & Initialization
  ****************************************************/
 
 // defining LED randomizer PIN
-#define LED_1  1
-#define LED_2  3
-#define LED_3  4
+#define LED_1  2
+#define LED_2  5
+#define LED_3  8
 
 unsigned long previousMillis = 0;        // will store last time LED was updated
-const long interval = 2500;              // interval at which to blink (milliseconds)
+const long interval = 1000;              // interval at which to blink (milliseconds)
 
 // random number
 int r = 0;
+
+//constants used to store amount of can/paper/trash
+int n1 = 0;
+int n2 = 0;
+int n3 = 0;
 
 /***************************************************
 Communication to Visual Uno: Define & Initialization
@@ -81,16 +86,16 @@ Communication to Visual Uno: Define & Initialization
 
 unsigned long timer;
 unsigned long tempTime;
-unsigned long oneMin = 30000;
+unsigned long oneMin = 60000;
+unsigned long minCounter = 0;
 int itemsCounter;
-bool flag;
 
 void setup() {
 
   Serial.begin(9600); // Initialize the serial monitor
 
   /********************************************************/
-  
+  /********************************************************/
   if (! musicPlayer.begin()) { // initialise the music player
     Serial.println(F("Couldn't find VS1053, do you have the right pins defined?"));
     while (1);
@@ -109,7 +114,7 @@ void setup() {
   musicPlayer.useInterrupt(VS1053_FILEPLAYER_PIN_INT);  // DREQ int
 
   /********************************************************/
-  
+  /********************************************************/
   // initialize the sensor pin as an input:
   pinMode(SENSORPIN_1, INPUT);
   pinMode(SENSORPIN_2, INPUT);
@@ -126,21 +131,19 @@ void setup() {
   
   
   /********************************************************/
-  
+  /********************************************************/
   randomSeed(analogRead(0));
   pinMode(LED_1, OUTPUT);
   pinMode(LED_2, OUTPUT);
   pinMode(LED_3, OUTPUT);
 
   /********************************************************/
-  
+  /********************************************************/
   pinMode(SENDSIGNAL, OUTPUT);
-  
-  flag = false;
-  
 }
 
 void loop() {
+  // playMusic();
   // start randomizer
   randomizer();
  
@@ -149,63 +152,89 @@ void loop() {
   bool break_paper = verifier2(SENSORPIN_3, SENSORPIN_4);
   bool break_trash = verifier3(SENSORPIN_5, SENSORPIN_6);
   
+  // store data according to break;
+  if (break_can == true) storeData(1);
+  if (break_paper == true) storeData(2);
+  if (break_trash == true) storeData(3);
+  
   // determine when to play music & send signal to visual
   if (break_can == true && r == 1) {
 	playMusic();
-	digitalWrite(SENDSIGNAL, HIGH);
-        Serial.println("CAN");
+	digitalWrite(SENDSIGNAL, HIGH); 
         itemsCounter++;
   }
   else if (break_paper == true && r == 2){
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH);  
-        Serial.println("PAPER");
         itemsCounter++;
   } 
   else if (break_trash == true && r == 3) {
 	playMusic();
-	digitalWrite(SENDSIGNAL, HIGH); 
-        Serial.println("TRASH");
+	digitalWrite(SENDSIGNAL, HIGH);  
         itemsCounter++;
   } 
   else digitalWrite(SENDSIGNAL, LOW);
 
   //Write to SD Card total count, every minute
   timer = millis();
-  if ((timer > 0) && (flag==false)){
+  if (timer > 0){
       tempTime = timer;
-      flag=true;
-      Serial.println("String");
   }
-
-  if ((timer-tempTime)>=oneMin){
-    Serial.println("Writing Stuff into SD card");
-    storeValue(itemsCounter);
+  
+  if ((timer-tempTime)==oneMin){
+    minCounter++;
+     storeValue(itemsCounter,minCounter);
     timer=0;
     tempTime=0;
-    flag=false;
+    itemsCounter=0;
+  }
+
+}
+
+// type 1 = can, type 2 = bottle, type 3 = waste
+void storeData(int type) {
+
+  File myFile = SD.open("data.txt", FILE_WRITE);
+
+  if (myFile) {
+    if (type == 1) {
+      myFile.println("Paper");
+    }
+    else if (type == 2) {
+      myFile.println("Bottle");
+    }
+    else {
+      myFile.println("Trash");
+    }
+    myFile.close();
+  }
+  else {
+    Serial.println("error opening data.txt");
   }
 
 }
 
 // Store value onto SD card
-void storeValue(int val) {
+void storeValue(int val, int time) {
 
   File myFile = SD.open("value.txt", FILE_WRITE);
+  String value = "Counter: " + val;
+  String timeval = "Time" + time;
+  String data = value + timeval;
 
   if (myFile) {
-    myFile.println(val);
+    myFile.println(data);
     myFile.close();
   }
   else {
-    Serial.println("error opening value.txt");
+    Serial.println("error opening data.txt");
   }
 
 }
 
 void playMusic() {
 	
-  int randNumber = random(1, 30);
+  int randNumber = random(1, 13);
   
   switch (randNumber){
 	case 1:
@@ -236,128 +265,61 @@ void playMusic() {
 	  musicPlayer.playFullFile("track009.mp3");
 	  break;
 	case 10:
-	  musicPlayer.playFullFile("track010.mp3");
+	  musicPlayer.playFullFile("track0010.mp3");
 	  break;
 	case 11:
-	  musicPlayer.playFullFile("track011.mp3");
+	  musicPlayer.playFullFile("track0011.mp3");
 	  break;
 	case 12:
-	  musicPlayer.playFullFile("track012.mp3");
+	  musicPlayer.playFullFile("track0012.mp3");
 	  break;
-        case 13:
-	  musicPlayer.playFullFile("track013.wav");
-	  break;
-        case 14:
-	  musicPlayer.playFullFile("track014.wav");
-	  break;
-        case 15:
-	  musicPlayer.playFullFile("track015.wav");
-	  break;
-        case 16:
-	  musicPlayer.playFullFile("track016.wav");
-	  break;
-        case 17:
-	  musicPlayer.playFullFile("track017.wav");
-	  break;
-        case 18:
-	  musicPlayer.playFullFile("track018.wav");
-	  break;
-        case 19:
-	  musicPlayer.playFullFile("track019.wav");
-	  break;
-        case 20:
-	  musicPlayer.playFullFile("track020.wav");
-	  break;
-        case 21:
-	  musicPlayer.playFullFile("track021.wav");
-	  break;
-        case 22:
-	  musicPlayer.playFullFile("track022.wav");
-	  break;
-        case 23:
-	  musicPlayer.playFullFile("track023.wav");
-	  break;
-        case 24:
-	  musicPlayer.playFullFile("track024.wav");
-	  break;
-        case 25:
-	  musicPlayer.playFullFile("track025.wav");
-	  break;
-        case 26:
-	  musicPlayer.playFullFile("track026.wav");
-	  break;
-        case 27:
-	  musicPlayer.playFullFile("track027.wav");
-	  break;
-        case 28:
-	  musicPlayer.playFullFile("track028.wav");
-	  break;
-        case 29:
-	  musicPlayer.playFullFile("track029.wav");
-	  break;
-      case 30:
-	  musicPlayer.playFullFile("track030.wav");
-	  break;
+
   }
   
 }
 
-//Randomizes between 3 Bins
-//Eliminating previously illuminated bins from the random pool
-
 void randomizer() {
-  
+
+  // if the different between the current time and last time is greater
+  // pick a random number between 1 and 10
+  // if n <= 4, show LED_1
+  // if N >= 7, show LED_2
+  // otherwise, show LED_3
   unsigned long currentMillis = millis();
 
   if (currentMillis - previousMillis >= interval) {
 
     previousMillis = currentMillis;
 
-    int randNumber = random(1, 3);
-    if (r == 1){
-      if (randNumber ==1) {
-        r = 2;
-      }
-      else {
-        r = 3;
-      }
-    }
-    else if (r == 2){
-      if (randNumber ==1) {
-        r = 1;
-      }
-      else {
-        r = 3;
-      }
-    }
-    else{
-      if (randNumber ==1) {
-        r = 1;
-      }
-      else {
-        r = 2;
-      }
-    }
-    
-    if (r == 1){
+    int randNumber = random(1, 11);
+    if (randNumber <= 4 ) {
+      r = 1;
+      n1++;
       digitalWrite(LED_1, HIGH);
-      Serial.println("#1");
       digitalWrite(LED_2, LOW);
       digitalWrite(LED_3, LOW);
     }
-    else if (r == 2){
+    else if (randNumber == 5 || randNumber == 6) {
+      r = 2;
+      n3++;
       digitalWrite(LED_1, LOW);
       digitalWrite(LED_2, HIGH);
-      Serial.println("#2");
       digitalWrite(LED_3, LOW);
     }
     else {
+      r = 3;
+      n2++;
       digitalWrite(LED_1, LOW);
       digitalWrite(LED_2, LOW);
       digitalWrite(LED_3, HIGH);
-      Serial.println("#3");
     }
-    
+    Serial.println("randomNumber: " + randNumber);
+    Serial.print(" n1: ");
+    Serial.print(n1);
+    Serial.print(" n2: ");
+    Serial.print(n2);
+    Serial.print(" n3: ");
+    Serial.println(n3);
   }
 }
 
@@ -375,20 +337,20 @@ bool verifier1(int sensorPin1, int sensorPin2) {
   // if it is, the sensorState is LOW:
 
   if (sensorState && !lastState_1) {
-    //Serial.println("Unbroken_1");
+    Serial.println("Unbroken_1");
   }
   if (!sensorState && lastState_1) {
-    //Serial.println("Broken_1");
+    Serial.println("Broken_1");
   }
   lastState_1 = sensorState;
 
   // check sensor state 2
   if (sensorState_2 && !lastState_2_1) {
-    //Serial.println("Unbroken_2");
+    Serial.println("Unbroken_2");
     //sensor2_1 = 1;
   }
   if (!sensorState_2 && lastState_2_1) {
-    //Serial.println("Broken_2");
+    Serial.println("Broken_2");
     sensor2_1 = 1;
   }
   lastState_2_1 = sensorState_2;
@@ -416,20 +378,20 @@ bool verifier2(int sensorPin1, int sensorPin2) {
   // if it is, the sensorState is LOW:
 
   if (sensorState && !lastState_2_3) {
-    //Serial.println("Broken_1");
+    Serial.println("Broken_1");
   }
   if (!sensorState && lastState_2_3) {
-    //Serial.println("Unbroken_1");
+    Serial.println("Unbroken_1");
   }
   lastState_2_3 = sensorState;
 
   // check sensor state 2
   if (sensorState_2 && !lastState_2_2) {
-    //Serial.println("Broken_2");
+    Serial.println("Broken_2");
     sensor2_2 = 1;
   }
   if (!sensorState_2 && lastState_2_2) {
-    //Serial.println("Unbroken_2");
+    Serial.println("Unbroken_2");
     //sensor2_2 = 1;
   }
   lastState_2_2 = sensorState_2;
@@ -458,20 +420,20 @@ bool verifier3(int sensorPin1, int sensorPin2) {
   // if it is, the sensorState is LOW:
 
   if (sensorState && !lastState_3) {
-    //Serial.println("Broken_1");
+    Serial.println("Broken_1");
   }
   if (!sensorState && lastState_3) {
-    //Serial.println("Unbroken_1");
+    Serial.println("Unbroken_1");
   }
   lastState_3 = sensorState;
 
   // check sensor state 2
   if (sensorState_2 && !lastState_2_3) {
-    //Serial.println("Broken_2");
+    Serial.println("Broken_2");
     sensor2_3 = 1;
   }
   if (!sensorState_2 && lastState_2_3) {
-    //Serial.println("Unbroken_2");
+    Serial.println("Unbroken_2");
     //sensor2_3 = 1;
   }
   lastState_2_3 = sensorState_2;

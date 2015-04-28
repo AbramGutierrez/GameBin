@@ -71,7 +71,7 @@ void loop() {
 
     if (digitalRead(COUNTERPIN)==HIGH) { //Signal from audioUno of proper count increase
       check = 1;
-      delay(50);
+      delay(200);
     }
   }
   
@@ -79,30 +79,32 @@ void loop() {
     value +=1;
     check = 0;
 
-    //Changing LED Matrix Panel
-    matrix.fillScreen(0);
-    matrix.swapBuffers(false);
-    matrix.setTextSize(1);    // size 1 == 8 pixels high
-    
-    matrix.setCursor(1, 0);   // start at top left, with one pixel of spacing
-    matrix.setTextColor(matrix.Color333(7,0,0)); //RED
-    matrix.print("SCORE");
-    
-    matrix.setCursor(1, 9);   // next line
-    matrix.setTextColor(matrix.Color333(0,7,7)); //BLUE
-    matrix.print(value);
   
-    delay(1000); // Delay to refresh LED Matrix
-    
-    // fill the screen with 'black'
-    matrix.fillScreen(matrix.Color333(0, 0, 0));
+  //Changing LED Matrix Panel
+  matrix.fillScreen(0);
+  
+  matrix.swapBuffers(false);
+  
+  matrix.setCursor(1, 0);   // start at top left, with one pixel of spacing
+  matrix.setTextSize(1);    // size 1 == 8 pixels high
+  
+  matrix.setTextColor(matrix.Color333(7,0,0)); //RED
+  matrix.print("SCORE");
+  
+  matrix.setCursor(1, 9);   // next line
+  matrix.setTextColor(matrix.Color333(0,7,7)); //BLUE
+  
+  matrix.print(value);
+
+  delay(1000); // Delay to refresh LED Matrix
+  
+  // fill the screen with 'black'
+  matrix.fillScreen(matrix.Color333(0, 0, 0));
 
   }
   
-  /*
   if (value==5){
       value = 0; //Reset Counter
   }
-  */
  
 }
