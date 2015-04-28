@@ -134,7 +134,5 @@ void loop() {
  // matrix.fillScreen(matrix.Color333(0, 0, 0));
 
   }
-  
-
  
 }
