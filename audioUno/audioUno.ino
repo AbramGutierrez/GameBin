@@ -73,11 +73,6 @@ const long interval = 2500;              // interval at which to blink (millisec
 // random number
 int r = 0;
 
-//constants used to store amount of can/paper/trash
-int n1 = 0;
-int n2 = 0;
-int n3 = 0;
-
 //Verifier Flag
 int canFlag = 0;
 int paperFlag = 0;
@@ -91,7 +86,6 @@ Communication to Visual Uno: Define & Initialization
 unsigned long timer;
 unsigned long tempTime;
 unsigned long oneMin = 30000;
-unsigned long minCounter = 0;
 int itemsCounter;
 bool flag;
 
@@ -113,7 +107,7 @@ void setup() {
   }
 
   // Set volume for left, right channels. lower numbers == louder volume!
-  musicPlayer.setVolume(30, 30);
+  musicPlayer.setVolume(0, 0);
 
   // If DREQ is on an interrupt pin (on uno, #2 or #3) we can do background audio playing
   musicPlayer.useInterrupt(VS1053_FILEPLAYER_PIN_INT);  // DREQ int
