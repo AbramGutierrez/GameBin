@@ -71,7 +71,7 @@ unsigned long previousMillis = 0;        // will store last time LED was updated
 const long interval = 2500;              // interval at which to blink (milliseconds)
 
 // random number
-int r = 0;
+int r = 1;
 
 //Verifier Flag
 int canFlag = 0;
@@ -131,7 +131,7 @@ void setup() {
   
   /********************************************************/
   /********************************************************/
-  randomSeed(analogRead(0));
+  randomSeed(analogRead(A0));
   pinMode(LED_1, OUTPUT);
   pinMode(LED_2, OUTPUT);
   pinMode(LED_3, OUTPUT);
