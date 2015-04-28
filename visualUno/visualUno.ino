@@ -19,9 +19,11 @@ RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
 
 #define LEDPIN 13
 #define COUNTERPIN 10
- 
+
+unsigned long previousMillis = 0;
 int value = 0;
 int check = 0;
+int interval = 5000;
     
 void setup() {
   
@@ -61,7 +63,7 @@ void setup() {
   delay(1000);
   
   // fill the screen with 'black'
-  matrix.fillScreen(matrix.Color333(0, 0, 0));
+  //matrix.fillScreen(matrix.Color333(0, 0, 0));
  
 }
 
@@ -73,38 +75,66 @@ void loop() {
       check = 1;
       delay(200);
     }
+    
+        
+    unsigned long currentMillis = millis();
+    
+    if( currentMillis - previousMillis <= interval ){
+      //previousMillis = currentMillis;
+      
+        matrix.fillScreen(0);
+    
+        matrix.swapBuffers(false);
+    
+        matrix.setCursor(1, 0);   // start at top left, with one pixel of spacing
+        matrix.setTextSize(1);    // size 1 == 8 pixels high
+    
+        matrix.setTextColor(matrix.Color333(7,0,0)); //RED
+        matrix.print("SCORE");
+        
+        matrix.setCursor(1, 9);   // next line
+        matrix.setTextColor(matrix.Color333(0,7,7)); //BLUE
+        
+        matrix.print(value);
+         
+        delay(750);
+    }
+     else{
+         matrix.fillScreen(matrix.Color333(0, 0, 0));
+     }
+    
+    
   }
   
   if (check==1){
     value +=1;
     check = 0;
+  
+    unsigned long currentMillis = millis();
+    previousMillis = currentMillis;
+    //Changing LED Matrix Panel
+    matrix.fillScreen(0);
+    
+    matrix.swapBuffers(false);
+    
+    matrix.setCursor(1, 0);   // start at top left, with one pixel of spacing
+    matrix.setTextSize(1);    // size 1 == 8 pixels high
+    
+    matrix.setTextColor(matrix.Color333(7,0,0)); //RED
+    matrix.print("SCORE");
+    
+    matrix.setCursor(1, 9);   // next line
+    matrix.setTextColor(matrix.Color333(0,7,7)); //BLUE
+    
+    matrix.print(value);
 
-  
-  //Changing LED Matrix Panel
-  matrix.fillScreen(0);
-  
-  matrix.swapBuffers(false);
-  
-  matrix.setCursor(1, 0);   // start at top left, with one pixel of spacing
-  matrix.setTextSize(1);    // size 1 == 8 pixels high
-  
-  matrix.setTextColor(matrix.Color333(7,0,0)); //RED
-  matrix.print("SCORE");
-  
-  matrix.setCursor(1, 9);   // next line
-  matrix.setTextColor(matrix.Color333(0,7,7)); //BLUE
-  
-  matrix.print(value);
+  //delay(1000); // Delay to refresh LED Matrix
 
-  delay(1000); // Delay to refresh LED Matrix
-  
   // fill the screen with 'black'
-  matrix.fillScreen(matrix.Color333(0, 0, 0));
+ // matrix.fillScreen(matrix.Color333(0, 0, 0));
 
   }
   
-  if (value==5){
-      value = 0; //Reset Counter
-  }
+
  
 }
