@@ -90,7 +90,7 @@ Communication to Visual Uno: Define & Initialization
 
 unsigned long timer;
 unsigned long tempTime;
-unsigned long oneMin = 60000;
+unsigned long oneMin = 30000;
 unsigned long minCounter = 0;
 int itemsCounter;
 bool flag;
@@ -146,12 +146,12 @@ void setup() {
   /********************************************************/
   pinMode(SENDSIGNAL, OUTPUT);
   
-  flag = false
+  flag = false;
+  
 }
 
 void loop() {
-  // playMusic();
-  // start randomizer
+
   randomizer();
  
   // verify breaks 
@@ -164,24 +164,27 @@ void loop() {
   if (break_can == true && r == 1) {
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
+        Serial.println("CAN");
         itemsCounter++;
   }
   else if (break_paper == true && r == 2){
 	playMusic();
-	digitalWrite(SENDSIGNAL, HIGH);  
+	digitalWrite(SENDSIGNAL, HIGH); 
+        Serial.println("PAPER");
         itemsCounter++;
   } 
   else if (break_trash == true && r == 3) {
 	playMusic();
-	digitalWrite(SENDSIGNAL, HIGH);  
+	digitalWrite(SENDSIGNAL, HIGH);
+        Serial.println("TRASH");
         itemsCounter++;
   } 
   else digitalWrite(SENDSIGNAL, LOW);
 
   //Write to SD Card total count, every minute
   timer = millis();
-if ((timer > 0) && (flag==false)){
-      tempTime = timer;
+   if ((timer > 0) && (flag==false)){
+     tempTime = timer;
       flag=true;
       Serial.println("String");
 }
@@ -191,12 +194,14 @@ if ((timer > 0) && (flag==false)){
     storeValue(itemsCounter);
     timer=0;
     tempTime=0;
+    flag = false;
   }
-
+  
+  
 }
 
 // Store value onto SD card
-void storeValue(int val, int time) {
+void storeValue(int val) {
 
   File myFile = SD.open("value.txt", FILE_WRITE);
 
@@ -216,124 +221,124 @@ void playMusic() {
   
   switch (randNumber){
 	case 1:
-          Serial.println(1);
+          Serial.println("Song 1");
 	  musicPlayer.playFullFile("track001.mp3");
 	  break;
 	case 2:
-          Serial.println(2);
+          Serial.println("Song 2");
 	  musicPlayer.playFullFile("track002.mp3");
 	  break;
 	case 3:
-          Serial.println(3);
+          Serial.println("Song 3");
 	  musicPlayer.playFullFile("track003.mp3");
 	  break;
 	case 4:
-          Serial.println(4);
+          Serial.println("Song 4");
 	  musicPlayer.playFullFile("track004.mp3");
 	  break;
 	case 5:
-          Serial.println(5);
+          Serial.println("Song 5");
 	  musicPlayer.playFullFile("track005.mp3");
 	  break;  
 	case 6:
-          Serial.println(6);
+          Serial.println("Song 6");
 	  musicPlayer.playFullFile("track006.mp3");
 	  break;  
 	case 7:
-          Serial.println(7);
+          Serial.println("Song 7");
 	  musicPlayer.playFullFile("track007.mp3"); 
 	  break; 
 	case 8:
-          Serial.println(8);
+          Serial.println("Song 8");
 	  musicPlayer.playFullFile("track008.mp3"); 
 	  break; 
 	case 9:
-          Serial.println(9);
+          Serial.println("Song 9");
 	  musicPlayer.playFullFile("track009.mp3");
 	  break;
 	case 10:
-          Serial.println(10);
+          Serial.println("Song 10");
 	  musicPlayer.playFullFile("track010.mp3");
 	  break;
 	case 11:
-          Serial.println(11);
+          Serial.println("Song 11");
 	  musicPlayer.playFullFile("track011.mp3");
 	  break;
 	case 12:
-          Serial.println(12);
+          Serial.println("Song 12");
 	  musicPlayer.playFullFile("track012.mp3");
 	  break;
 	case 13:
-          Serial.println(13);
+          Serial.println("Song 13");
 	  musicPlayer.playFullFile("track013.mp3");
 	  break;
 	case 14:
-          Serial.println(14);
-	  musicPlayer.playFullFile("track014.mp3");
+          Serial.println("Song 14");
+	  musicPlayer.playFullFile("track014.wav");
 	  break;
 	case 15:
-          Serial.println(15);
-	  musicPlayer.playFullFile("track015.mp3");
+          Serial.println("Song 15");
+	  musicPlayer.playFullFile("track015.wav");
 	  break;
 	case 16:
-          Serial.println(16);
-	  musicPlayer.playFullFile("track016.mp3");
+          Serial.println("Song 16");
+	  musicPlayer.playFullFile("track016.wav");
 	  break;
 	case 17:
-          Serial.println(17);
-	  musicPlayer.playFullFile("track017.mp3");
+          Serial.println("Song 17");
+	  musicPlayer.playFullFile("track017.wav");
 	  break;
 	case 18:
-          Serial.println(18);
-	  musicPlayer.playFullFile("track018.mp3");
+          Serial.println("Song 18");
+	  musicPlayer.playFullFile("track018.wav");
 	  break;
 	case 19:
-          Serial.println(19);
-	  musicPlayer.playFullFile("track019.mp3");
+          Serial.println("Song 19");
+	  musicPlayer.playFullFile("track019.wav");
 	  break;
 	case 20:
-          Serial.println(20);
-	  musicPlayer.playFullFile("track020.mp3");
+          Serial.println("Song 20");
+	  musicPlayer.playFullFile("track020.wav");
 	  break;
 	case 21:
-          Serial.println(21);
-	  musicPlayer.playFullFile("track021.mp3");
+          Serial.println("Song 21");
+	  musicPlayer.playFullFile("track021.wav");
 	  break;
 	case 22:
-          Serial.println(22);
-	  musicPlayer.playFullFile("track022.mp3");
+          Serial.println("Song 22");
+	  musicPlayer.playFullFile("track022.wav");
 	  break;
 	case 23:
-          Serial.println(23);
-	  musicPlayer.playFullFile("track023.mp3");
+          Serial.println("Song 23");
+	  musicPlayer.playFullFile("track023.wav");
 	  break;
 	case 24:
-          Serial.println(24);
-	  musicPlayer.playFullFile("track024.mp3");
+          Serial.println("Song 24");
+	  musicPlayer.playFullFile("track024.wav");
 	  break;
 	case 25:
-          Serial.println(25);
-	  musicPlayer.playFullFile("track025.mp3");
+          Serial.println("Song 25");
+	  musicPlayer.playFullFile("track025.wav");
 	  break;
 	case 26:
-          Serial.println(26);
-	  musicPlayer.playFullFile("track026.mp3");
+          Serial.println("Song 26");
+	  musicPlayer.playFullFile("track026.wav");
 	  break;
 	case 27:
-          Serial.println(27);
-	  musicPlayer.playFullFile("track027.mp3");
+          Serial.println("Song 27");
+	  musicPlayer.playFullFile("track027.wav");
 	  break;
 	case 28:
-          Serial.println(28);
-	  musicPlayer.playFullFile("track028.mp3");
+          Serial.println("Song 28");
+	  musicPlayer.playFullFile("track028.wav");
 	  break;
 	case 29:
-          Serial.println(29);
-	  musicPlayer.playFullFile("track029.mp3");
+          Serial.println("Song 29");
+	  musicPlayer.playFullFile("track029.wav");
 	  break;
 	case 30:
-          Serial.println(30);
-	  musicPlayer.playFullFile("track030.mp3");
+          Serial.println("Song 30");
+	  musicPlayer.playFullFile("track030.wav");
 	  break;
 
   }
@@ -342,11 +347,6 @@ void playMusic() {
 
 void randomizer() {
 
-  // if the different between the current time and last time is greater
-  // pick a random number between 1 and 10
-  // if n <= 4, show LED_1
-  // if N >= 7, show LED_2
-  // otherwise, show LED_3
   unsigned long currentMillis = millis();
 
   if (currentMillis - previousMillis >= interval) {
@@ -370,27 +370,23 @@ void randomizer() {
 
     if (r == 1) {
       digitalWrite(LED_1, HIGH);
+      Serial.println("#1");
       digitalWrite(LED_2, LOW);
       digitalWrite(LED_3, LOW);
     }
     else if (r == 2) {
       digitalWrite(LED_1, LOW);
       digitalWrite(LED_2, HIGH);
+      Serial.println("#2");
       digitalWrite(LED_3, LOW);
     }
     else {
       digitalWrite(LED_1, LOW);
       digitalWrite(LED_2, LOW);
       digitalWrite(LED_3, HIGH);
+      Serial.println("#3");
     }
     
-/*    Serial.println("randomNumber: " + randNumber);
-    Serial.print(" n1: ");
-    Serial.print(n1);
-    Serial.print(" n2: ");
-    Serial.print(n2);
-    Serial.print(" n3: ");
-    Serial.println(n3);*/
   }
 }
 
