@@ -155,7 +155,7 @@ void loop() {
   
   //r = 1;
   // determine when to play music & send signal to visual
-  if (break_can == true && r == 1) {
+  if (break_can == true) {
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
         Serial.println("CAN");
@@ -268,71 +268,71 @@ void playMusic() {
 	  break;
 	case 14:
 //          Serial.println("Song 14");
-	  musicPlayer.playFullFile("track014.wav");
+	  musicPlayer.playFullFile("track014.mp3");
 	  break;
 	case 15:
 //          Serial.println("Song 15");
-	  musicPlayer.playFullFile("track015.wav");
+	  musicPlayer.playFullFile("track015.mp3");
 	  break;
 	case 16:
 //          Serial.println("Song 16");
-	  musicPlayer.playFullFile("track016.wav");
+	  musicPlayer.playFullFile("track016.mp3");
 	  break;
 	case 17:
 //          Serial.println("Song 17");
-	  musicPlayer.playFullFile("track017.wav");
+	  musicPlayer.playFullFile("track017.mp3");
 	  break;
 	case 18:
 //          Serial.println("Song 18");
-	  musicPlayer.playFullFile("track018.wav");
+	  musicPlayer.playFullFile("track018.mp3");
 	  break;
 	case 19:
 //          Serial.println("Song 19");
-	  musicPlayer.playFullFile("track019.wav");
+	  musicPlayer.playFullFile("track019.mp3");
 	  break;
 	case 20:
 //          Serial.println("Song 20");
-	  musicPlayer.playFullFile("track020.wav");
+	  musicPlayer.playFullFile("track020.mp3");
 	  break;
 	case 21:
 //          Serial.println("Song 21");
-	  musicPlayer.playFullFile("track021.wav");
+	  musicPlayer.playFullFile("track021.mp3");
 	  break;
 	case 22:
 //          Serial.println("Song 22");
-	  musicPlayer.playFullFile("track022.wav");
+	  musicPlayer.playFullFile("track022.mp3");
 	  break;
 	case 23:
 //          Serial.println("Song 23");
-	  musicPlayer.playFullFile("track023.wav");
+	  musicPlayer.playFullFile("track023.mp3");
 	  break;
 	case 24:
 //          Serial.println("Song 24");
-	  musicPlayer.playFullFile("track024.wav");
+	  musicPlayer.playFullFile("track024.mp3");
 	  break;
 	case 25:
 //          Serial.println("Song 25");
-	  musicPlayer.playFullFile("track025.wav");
+	  musicPlayer.playFullFile("track025.mp3");
 	  break;
 	case 26:
 //          Serial.println("Song 26");
-	  musicPlayer.playFullFile("track026.wav");
+	  musicPlayer.playFullFile("track026.mp3");
 	  break;
 	case 27:
 //          Serial.println("Song 27");
-	  musicPlayer.playFullFile("track027.wav");
+	  musicPlayer.playFullFile("track027.mp3");
 	  break;
 	case 28:
 //          Serial.println("Song 28");
-	  musicPlayer.playFullFile("track028.wav");
+	  musicPlayer.playFullFile("track028.mp3");
 	  break;
 	case 29:
 //          Serial.println("Song 29");
-	  musicPlayer.playFullFile("track029.wav");
+	  musicPlayer.playFullFile("track029.mp3");
 	  break;
 	case 30:
 //          Serial.println("Song 30");
-	  musicPlayer.playFullFile("track030.wav");
+	  musicPlayer.playFullFile("track030.mp3");
 	  break;
 
   }

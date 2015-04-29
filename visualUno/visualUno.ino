@@ -18,7 +18,7 @@ Display LED Matrix Scoreboard and receive input from audioUno about updated scor
 RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
 
 #define LEDPIN 13
-#define COUNTERPIN 10
+#define COUNTERPIN 11
 
 unsigned long previousMillis = 0;
 int value = 0;
@@ -73,8 +73,11 @@ void loop() {
 
     if (digitalRead(COUNTERPIN)==HIGH) { //Signal from audioUno of proper count increase
       check = 1;
-      delay(200);
+      delay(50);
+      Serial.println("HERE");
     }
+    
+    else{
     
         
     unsigned long currentMillis = millis();
@@ -97,11 +100,13 @@ void loop() {
         
         matrix.print(value);
          
-        delay(750);
+        //delay(750);
     }
      else{
          matrix.fillScreen(matrix.Color333(0, 0, 0));
      }
+     
+    }
     
     
   }
@@ -109,7 +114,7 @@ void loop() {
   if (check==1){
     value +=1;
     check = 0;
-  
+    Serial.println("increment");
     unsigned long currentMillis = millis();
     previousMillis = currentMillis;
     //Changing LED Matrix Panel
@@ -128,7 +133,7 @@ void loop() {
     
     matrix.print(value);
 
-  //delay(1000); // Delay to refresh LED Matrix
+    //delay(1000); // Delay to refresh LED Matrix
 
   // fill the screen with 'black'
  // matrix.fillScreen(matrix.Color333(0, 0, 0));
