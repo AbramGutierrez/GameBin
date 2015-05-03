@@ -145,23 +145,49 @@ void loop() {
   bool break_paper = verifier2(SENSORPIN_3, SENSORPIN_4);
   bool break_trash = verifier3(SENSORPIN_5, SENSORPIN_6);
   
+  /*
   // determine when to play music & send signal to visual
   if (break_can == true && r==1) {
-	playMusic();
+	//playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
         delay(187);
         Serial.println("CAN");
         itemsCounter++;
   }
   else if (break_paper == true && r == 2){
-	playMusic();
+	//playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
         delay(187);
         Serial.println("PAPER");
         itemsCounter++;
   } 
   else if (break_trash == true && r == 3) {
-	playMusic();
+	//playMusic();
+	digitalWrite(SENDSIGNAL, HIGH);
+        delay(187);
+        Serial.println("TRASH");
+        itemsCounter++;
+  } 
+  else digitalWrite(SENDSIGNAL, LOW);
+  */
+  
+   // Count everything
+  if (break_can == true) {
+	//playMusic();
+	digitalWrite(SENDSIGNAL, HIGH); 
+        delay(187);
+        Serial.println("CAN");
+        itemsCounter++;
+  }
+  else if (break_paper == true){
+	//playMusic();
+	digitalWrite(SENDSIGNAL, HIGH); 
+        delay(187);
+        Serial.println("PAPER");
+        itemsCounter++;
+  } 
+  else if (break_trash == true) {
+	//playMusic();
 	digitalWrite(SENDSIGNAL, HIGH);
         delay(187);
         Serial.println("TRASH");
