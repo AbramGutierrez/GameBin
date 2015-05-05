@@ -150,7 +150,7 @@ void loop() {
    break_trash = verifier3(SENSORPIN_5, SENSORPIN_6);
   
   // determine when to play music & send signal to visual
-  if ( break_can == true) {
+  if ( break_can == true && r == 1) {
         itemsCounter++;
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
@@ -158,7 +158,7 @@ void loop() {
         //Serial.println("CAN");
        // itemsCounter++;
   }
-  else if (break_paper == true){
+  else if (break_paper == true && r == 2){
         itemsCounter++;
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
@@ -166,7 +166,7 @@ void loop() {
         //Serial.println("PAPER");
        // itemsCounter++;
   } 
-  else if (break_trash == true ) {
+  else if (break_trash == true && r == 3) {
         itemsCounter++;
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH);
