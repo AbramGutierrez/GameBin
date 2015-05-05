@@ -141,56 +141,30 @@ void loop() {
   randomizer();
  
   // verify breaks 
-  bool break_can = verifier1(SENSORPIN_1, SENSORPIN_2);
-  bool break_paper = verifier2(SENSORPIN_3, SENSORPIN_4);
-  bool break_trash = verifier3(SENSORPIN_5, SENSORPIN_6);
+  //bool break_can = verifier1(SENSORPIN_1, SENSORPIN_2);
+ // bool break_paper = verifier2(SENSORPIN_3, SENSORPIN_4);
+ // bool break_trash = verifier3(SENSORPIN_5, SENSORPIN_6);
   
-  /*
   // determine when to play music & send signal to visual
-  if (break_can == true && r==1) {
-	//playMusic();
+  if ( verifier1(SENSORPIN_1, SENSORPIN_2)) {
+	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
         delay(187);
-        Serial.println("CAN");
+        //Serial.println("CAN");
         itemsCounter++;
   }
-  else if (break_paper == true && r == 2){
-	//playMusic();
+  else if (verifier2(SENSORPIN_3, SENSORPIN_4)){
+	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
         delay(187);
-        Serial.println("PAPER");
+        //Serial.println("PAPER");
         itemsCounter++;
   } 
-  else if (break_trash == true && r == 3) {
-	//playMusic();
+  else if (verifier3(SENSORPIN_5, SENSORPIN_6) ) {
+	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH);
         delay(187);
-        Serial.println("TRASH");
-        itemsCounter++;
-  } 
-  else digitalWrite(SENDSIGNAL, LOW);
-  */
-  
-   // Count everything
-  if (break_can == true) {
-	//playMusic();
-	digitalWrite(SENDSIGNAL, HIGH); 
-        delay(187);
-        Serial.println("CAN");
-        itemsCounter++;
-  }
-  else if (break_paper == true){
-	//playMusic();
-	digitalWrite(SENDSIGNAL, HIGH); 
-        delay(187);
-        Serial.println("PAPER");
-        itemsCounter++;
-  } 
-  else if (break_trash == true) {
-	//playMusic();
-	digitalWrite(SENDSIGNAL, HIGH);
-        delay(187);
-        Serial.println("TRASH");
+        //Serial.println("TRASH");
         itemsCounter++;
   } 
   else digitalWrite(SENDSIGNAL, LOW);
@@ -200,12 +174,12 @@ void loop() {
    if ((timer > 0) && (flag==false)){
      tempTime = timer;
       flag=true;
-      Serial.println("Start New Counter");
+      //Serial.println("Start New Counter");
 }
   
   if ((timer-tempTime)>=oneMin){
-    Serial.println("End Counter");
-    Serial.println("Writing Data tp SD card");
+    //Serial.println("End Counter");
+    //Serial.println("Writing Data tp SD card");
     storeValue(itemsCounter);
     timer=0;
     tempTime=0;
