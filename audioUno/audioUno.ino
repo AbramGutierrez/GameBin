@@ -54,6 +54,10 @@ int lastState_2 = 0, lastState_2_2 = 0;
 int sensor2_3 = 0;
 int lastState_3 = 0, lastState_2_3 = 0;
 
+bool break_can;
+bool break_paper;
+bool break_trash;
+
 /* LED randomizer: Define & Initialization */
 
 // defining LED randomizer PIN
@@ -141,31 +145,34 @@ void loop() {
   randomizer();
  
   // verify breaks 
-  //bool break_can = verifier1(SENSORPIN_1, SENSORPIN_2);
- // bool break_paper = verifier2(SENSORPIN_3, SENSORPIN_4);
- // bool break_trash = verifier3(SENSORPIN_5, SENSORPIN_6);
+   break_can = verifier1(SENSORPIN_1, SENSORPIN_2);
+   break_paper = verifier2(SENSORPIN_3, SENSORPIN_4);
+   break_trash = verifier3(SENSORPIN_5, SENSORPIN_6);
   
   // determine when to play music & send signal to visual
-  if ( verifier1(SENSORPIN_1, SENSORPIN_2)) {
+  if ( break_can == true) {
+        itemsCounter++;
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
         delay(187);
         //Serial.println("CAN");
-        itemsCounter++;
+       // itemsCounter++;
   }
-  else if (verifier2(SENSORPIN_3, SENSORPIN_4)){
+  else if (break_paper == true){
+        itemsCounter++;
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
         delay(187);
         //Serial.println("PAPER");
-        itemsCounter++;
+       // itemsCounter++;
   } 
-  else if (verifier3(SENSORPIN_5, SENSORPIN_6) ) {
+  else if (break_trash == true ) {
+        itemsCounter++;
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH);
         delay(187);
         //Serial.println("TRASH");
-        itemsCounter++;
+        //itemsCounter++;
   } 
   else digitalWrite(SENDSIGNAL, LOW);
 
