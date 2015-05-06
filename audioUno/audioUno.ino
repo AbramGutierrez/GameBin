@@ -65,11 +65,13 @@ bool break_trash;
 #define LED_2  5
 #define LED_3  8
 
+unsigned long currentMillis;
 unsigned long previousMillis = 0;        // will store last time LED was updated
 const long interval = 2500;              // interval at which to blink (milliseconds)
 
 // random number
 int r = 1;
+int randNumber;
 
 //Verifier Flag
 int canFlag = 0;
@@ -213,7 +215,7 @@ void storeValue(int val) {
 
 void playMusic() {
   
-  int randNumber = random(1, 31);
+  randNumber = random(1, 31);
   
   switch (randNumber){
 	case 1:
@@ -311,7 +313,7 @@ void playMusic() {
 
 void randomizer() {
 
-  unsigned long currentMillis = millis();
+  currentMillis = millis();
 
   if (currentMillis - previousMillis >= interval) {
 
@@ -334,21 +336,21 @@ void randomizer() {
 
     if (r == 1) {
       digitalWrite(LED_1, HIGH);
-      Serial.println("#1");
+     // Serial.println("#1");
       digitalWrite(LED_2, LOW);
       digitalWrite(LED_3, LOW);
     }
     else if (r == 2) {
       digitalWrite(LED_1, LOW);
       digitalWrite(LED_2, HIGH);
-      Serial.println("#2");
+     // Serial.println("#2");
       digitalWrite(LED_3, LOW);
     }
     else {
       digitalWrite(LED_1, LOW);
       digitalWrite(LED_2, LOW);
       digitalWrite(LED_3, HIGH);
-      Serial.println("#3");
+      //Serial.println("#3");
     }
     
   }
