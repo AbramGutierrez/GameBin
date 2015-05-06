@@ -20,6 +20,7 @@ RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
 #define LEDPIN 13
 #define COUNTERPIN 11
 
+unsigned long currentMillis;
 unsigned long previousMillis = 0;
 int value = 0;
 int check = 0;
@@ -74,13 +75,13 @@ void loop() {
     if (digitalRead(COUNTERPIN)==HIGH) { //Signal from audioUno of proper count increase
       check = 1;
       delay(50);
-      Serial.println("HERE");
+      //Serial.println("HERE");
     }
     
     else{
     
         
-    unsigned long currentMillis = millis();
+    currentMillis = millis();
     
     if( currentMillis - previousMillis <= interval ){
       //previousMillis = currentMillis;
@@ -114,9 +115,9 @@ void loop() {
   if (check==1){
     value +=1;
     check = 0;
-    Serial.println("increment");
-    unsigned long currentMillis = millis();
-    previousMillis = currentMillis;
+   // Serial.println("increment");
+    //unsigned long currentMillis = millis();
+    previousMillis = millis();
     //Changing LED Matrix Panel
     matrix.fillScreen(0);
     
