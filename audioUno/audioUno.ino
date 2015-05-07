@@ -156,7 +156,7 @@ void loop() {
         itemsCounter++;
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
-        delay(187);
+        delay(55);
         //Serial.println("CAN");
        // itemsCounter++;
   }
@@ -164,7 +164,7 @@ void loop() {
         itemsCounter++;
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
-        delay(187);
+        delay(55);
         //Serial.println("PAPER");
        // itemsCounter++;
   } 
@@ -172,7 +172,7 @@ void loop() {
         itemsCounter++;
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH);
-        delay(187);
+       delay(55);
         //Serial.println("TRASH");
         //itemsCounter++;
   } 
