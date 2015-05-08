@@ -84,7 +84,7 @@ int trashFlag = 0;
 
 unsigned long timer;
 unsigned long tempTime;
-unsigned long oneMin = 30000;
+unsigned long oneMin = 1800000;
 int itemsCounter;
 bool flag;
 
@@ -156,7 +156,7 @@ void loop() {
         itemsCounter++;
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
-        delay(55);
+        delay(56);
         //Serial.println("CAN");
        // itemsCounter++;
   }
@@ -164,7 +164,7 @@ void loop() {
         itemsCounter++;
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH); 
-        delay(55);
+        delay(56);
         //Serial.println("PAPER");
        // itemsCounter++;
   } 
@@ -172,7 +172,7 @@ void loop() {
         itemsCounter++;
 	playMusic();
 	digitalWrite(SENDSIGNAL, HIGH);
-       delay(55);
+       delay(56);
         //Serial.println("TRASH");
         //itemsCounter++;
   } 
